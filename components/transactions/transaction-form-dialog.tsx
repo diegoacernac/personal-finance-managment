@@ -34,12 +34,20 @@ export function TransactionFormDialog({
   categories,
   transaction,
   compact = false,
+  open: controlledOpen,
+  onOpenChange,
 }: {
   categories: Category[]
   transaction?: TransactionWithCategory
   compact?: boolean
+  // When controlled, the dialog renders without its own trigger button.
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
 }) {
-  const [open, setOpen] = useState(false)
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false)
+  const isControlled = controlledOpen !== undefined
+  const open = isControlled ? controlledOpen : uncontrolledOpen
+  const setOpen = isControlled ? (onOpenChange ?? (() => {})) : setUncontrolledOpen
   const [isPending, startTransition] = useTransition()
   const [type, setType] = useState<Category['type']>(transaction?.type ?? 'expense')
   const isEdit = Boolean(transaction)
@@ -65,26 +73,28 @@ export function TransactionFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger
-        render={
-          isEdit ? (
-            compact ? (
-              <Button variant="ghost" size="icon-sm" title="Editar">
-                <Pencil className="h-3.5 w-3.5" />
-              </Button>
+      {!isControlled && (
+        <DialogTrigger
+          render={
+            isEdit ? (
+              compact ? (
+                <Button variant="ghost" size="icon-sm" title="Editar">
+                  <Pencil className="h-3.5 w-3.5" />
+                </Button>
+              ) : (
+                <Button variant="ghost" size="sm">
+                  Editar
+                </Button>
+              )
             ) : (
-              <Button variant="ghost" size="sm">
-                Editar
+              <Button size="sm">
+                <Plus className="h-4 w-4" />
+                Nuevo movimiento
               </Button>
             )
-          ) : (
-            <Button size="sm">
-              <Plus className="h-4 w-4" />
-              Nuevo movimiento
-            </Button>
-          )
-        }
-      />
+          }
+        />
+      )}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{isEdit ? 'Editar movimiento' : 'Nuevo movimiento'}</DialogTitle>

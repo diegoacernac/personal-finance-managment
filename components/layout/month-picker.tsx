@@ -16,7 +16,7 @@ export function MonthPicker({ period, basePath }: { period: string; basePath: st
           </Link>
         }
       />
-      <span className="min-w-40 text-center text-sm font-medium capitalize">
+      <span className="min-w-40 text-center text-sm font-medium">
         {formatPeriodLabel(period)}
       </span>
       <Button

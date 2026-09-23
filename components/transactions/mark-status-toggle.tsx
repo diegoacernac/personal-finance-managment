@@ -33,20 +33,46 @@ export function MarkStatusToggle({
   }
 
   const isCompleted = optimisticStatus === 'completed'
+  const title = isCompleted
+    ? 'Completado — clic para marcar pendiente'
+    : 'Pendiente — clic para marcar completado'
+
+  if (compact) {
+    return (
+      <button
+        type="button"
+        onClick={handleToggle}
+        title={title}
+        aria-pressed={isCompleted}
+        className="flex size-8 shrink-0 items-center justify-center rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+      >
+        <span
+          className={cn(
+            'flex size-5 items-center justify-center rounded-full border-2 transition-all duration-200',
+            isCompleted
+              ? 'border-emerald-500 bg-emerald-500 text-white'
+              : 'border-muted-foreground/40 hover:border-emerald-500'
+          )}
+        >
+          <Check className={cn('size-3 stroke-[3] transition-transform', isCompleted ? 'scale-100' : 'scale-0')} />
+        </span>
+      </button>
+    )
+  }
 
   return (
     <Button
       variant="ghost"
-      size={compact ? 'icon-sm' : 'sm'}
+      size="sm"
       onClick={handleToggle}
-      title={isCompleted ? 'Pagado — clic para marcar pendiente' : 'Pendiente — clic para marcar pagado'}
+      title={title}
       className={cn(
-        !compact && 'gap-1.5',
+        'gap-1.5',
         isCompleted ? 'text-emerald-600 dark:text-emerald-400' : 'text-muted-foreground'
       )}
     >
       {isCompleted ? <Check className="h-4 w-4" /> : <Circle className="h-4 w-4" />}
-      {!compact && (isCompleted ? 'Pagado' : 'Pendiente')}
+      {isCompleted ? 'Pagado' : 'Pendiente'}
     </Button>
   )
 }

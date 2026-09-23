@@ -7,6 +7,7 @@ import { MonthPicker } from '@/components/layout/month-picker'
 import { TransactionFormDialog } from '@/components/transactions/transaction-form-dialog'
 import { TransactionTypeSection } from '@/components/transactions/transaction-type-section'
 import { PageHeader } from '@/components/layout/page-header'
+import { MonthSummary } from '@/components/transactions/month-summary'
 
 export default async function TransaccionesPage({
   searchParams,
@@ -38,7 +39,9 @@ export default async function TransaccionesPage({
         }
       />
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <MonthSummary groups={groups} />
+
+      <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-3">
         {groups.map((group) => (
           <TransactionTypeSection
             key={group.type}

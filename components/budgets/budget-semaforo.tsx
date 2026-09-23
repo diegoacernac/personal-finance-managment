@@ -31,7 +31,7 @@ export function BudgetSemaforo({
   if (budgets.length === 0) return null
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-2 space-y-3 delay-150 duration-500">
+    <div className="space-y-3">
       {overallBudget &&
         (() => {
           const status = statusByBudget.get(overallBudget.id)

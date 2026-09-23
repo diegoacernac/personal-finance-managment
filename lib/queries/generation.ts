@@ -1,6 +1,9 @@
+import { cache } from 'react'
 import { createClient } from '@/lib/supabase/server'
 
-export async function ensurePeriodGenerated(period: string) {
+// Memoized per request: transactions and subscriptions both need the period
+// generated, but the RPCs should only run once per render.
+export const ensurePeriodGenerated = cache(async (period: string) => {
   const supabase = await createClient()
 
   const [{ error: templatesError }, { error: subscriptionsError }] = await Promise.all([
@@ -10,4 +13,4 @@ export async function ensurePeriodGenerated(period: string) {
 
   if (templatesError) throw new Error(templatesError.message)
   if (subscriptionsError) throw new Error(subscriptionsError.message)
-}
+})

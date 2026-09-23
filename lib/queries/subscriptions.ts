@@ -25,9 +25,6 @@ type RawSubscription = {
 }
 
 export async function getSubscriptionsWithShares(period: string): Promise<SubscriptionWithShares[]> {
-  // Backfills this period's billing transaction + share-payment rows before reading.
-  await ensurePeriodGenerated(period)
-
   const supabase = await createClient()
 
   const [{ data: subscriptions, error: subError }, { data: netCosts, error: netError }, { data: payments, error: payError }] =
@@ -39,10 +36,14 @@ export async function getSubscriptionsWithShares(period: string): Promise<Subscr
         )
         .order('billing_day', { ascending: true }),
       supabase.from('subscription_net_cost').select('subscription_id, diego_net_cost'),
-      supabase
-        .from('subscription_share_payments')
-        .select('id, subscription_share_id, status')
-        .eq('period', period),
+      // Share-payment rows for this period are backfilled by the generation RPC,
+      // so only this query has to wait for it.
+      ensurePeriodGenerated(period).then(() =>
+        supabase
+          .from('subscription_share_payments')
+          .select('id, subscription_share_id, status')
+          .eq('period', period)
+      ),
     ])
 
   if (subError) throw new Error(subError.message)

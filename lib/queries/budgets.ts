@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { ensurePeriodGenerated } from '@/lib/queries/generation'
 import type { BudgetWithCategory, BudgetStatus } from '@/lib/types'
 
 export async function getBudgets(): Promise<BudgetWithCategory[]> {
@@ -13,7 +14,7 @@ export async function getBudgets(): Promise<BudgetWithCategory[]> {
 }
 
 export async function getBudgetStatus(period: string): Promise<BudgetStatus[]> {
-  const supabase = await createClient()
+  const [supabase] = await Promise.all([createClient(), ensurePeriodGenerated(period)])
   const { data, error } = await supabase.rpc('get_budget_status', { p_period: period })
 
   if (error) throw new Error(error.message)

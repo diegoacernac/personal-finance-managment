@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { ensurePeriodGenerated } from '@/lib/queries/generation'
 import { shiftPeriod } from '@/lib/period'
 import type { MonthlyTotal, MonthProjection } from '@/lib/types'
 
@@ -25,7 +26,7 @@ export async function getMonthlyTotals(months = 6): Promise<MonthlyTotal[]> {
 }
 
 export async function getMonthProjection(period: string): Promise<MonthProjection> {
-  const supabase = await createClient()
+  const [supabase] = await Promise.all([createClient(), ensurePeriodGenerated(period)])
   const { data, error } = await supabase
     .rpc('get_month_projection', { p_period: period })
     .single()

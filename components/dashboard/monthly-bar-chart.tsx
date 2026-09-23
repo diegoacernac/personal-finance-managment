@@ -28,7 +28,7 @@ export function MonthlyBarChart({ data }: { data: MonthlyTotal[] }) {
   }))
 
   return (
-    <Card className="animate-in fade-in slide-in-from-bottom-2 p-4 delay-300 duration-500">
+    <Card className="p-4">
       <div className="mb-4 flex items-center gap-2">
         <BarChart3 className="h-4 w-4 text-primary" />
         <p className="text-sm font-medium text-muted-foreground">Ingresos vs. Gastos</p>
@@ -57,8 +57,8 @@ export function MonthlyBarChart({ data }: { data: MonthlyTotal[] }) {
               }}
             />
             <Legend wrapperStyle={{ fontSize: 12 }} />
-            <Bar dataKey="Ingresos" fill="#10b981" radius={[6, 6, 0, 0]} />
-            <Bar dataKey="Gastos" fill="#ef4444" radius={[6, 6, 0, 0]} />
+            <Bar dataKey="Ingresos" fill="#10b981" radius={[6, 6, 0, 0]} animationDuration={400} />
+            <Bar dataKey="Gastos" fill="#ef4444" radius={[6, 6, 0, 0]} animationDuration={400} />
           </BarChart>
         </ResponsiveContainer>
       </div>

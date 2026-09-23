@@ -19,11 +19,10 @@ export default function ConfiguracionPage() {
         subtitle="Administra los datos que alimentan tu dashboard"
       />
       <div className="grid gap-3 sm:grid-cols-2">
-        {SECTIONS.map((section, i) => (
+        {SECTIONS.map((section) => (
           <Link key={section.href} href={section.href} className="group">
             <Card
-              className="animate-in fade-in slide-in-from-bottom-2 flex flex-row items-center gap-4 p-4 duration-500 hover:shadow-md"
-              style={{ animationDelay: `${i * 60}ms` }}
+              className="flex flex-row items-center gap-4 p-4 hover:shadow-md"
             >
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-transform group-hover:scale-105">
                 <section.icon className="h-5 w-5" />

@@ -16,7 +16,7 @@ export function ProjectionWidget({ projection }: { projection: MonthProjection }
   ]
 
   return (
-    <Card className="animate-in fade-in slide-in-from-bottom-2 p-4 delay-300 duration-500">
+    <Card className="p-4">
       <div className="mb-4 flex items-center gap-2">
         <Sparkles className="h-4 w-4 text-primary" />
         <p className="text-sm font-medium text-muted-foreground">Proyección de fin de mes</p>
